@@ -9,18 +9,34 @@ public class Case {
     Information opportunity;
     HashMap<String, Person> suspects;
     HashMap<String, Place> places;
+    HashMap<String, Information> clues;
 
     public Case() {
         createSuspects();
         createPlaces();
+        createClues();
         createSolution();
+        sortClues();
     }
 
+    void sortClues() {
+    }
+
+
     void createSolution() {
-        this.culprit = suspects.get("Hubert");
-        this.motive = new Information("All these commits are so annoying, such chaos! I just want to work on my code in peace, I'm glad someone took initiative.", true, culprit);
-        this.means = new Information("Next to the door, there is a list of all authorized personell: ", true, places.get("Server Room"));
-        this.opportunity = new Information("Hubert often stays late and is the last one to leave the building", true, suspects.get("Sam"));
+        HashMap<String, String> solution = new HashMap<>();
+        solution.put("Culprit", "Hubert");
+        solution.put("Motive", "Annoyance");
+        solution.put("Place", "Server Room");
+        solution.put("Time", "Night");
+    }
+
+    void createClues() {
+        HashMap<String, Information> clues = new HashMap<>();
+        //clues.put("", new Information("", false));
+        clues.put("Motive Hubert", new Information("IAll these commits are so annoying, such chaos! I just want to work on my code in peace, I'm glad someone took initiative.", true, culprit));
+        clues.put("SR list", new Information("Next to the door, there is a list of all authorized personell: \nSam Phishmaster \nHubert Norton \nRita Codecrunch", true, places.get("Server Room")));
+        clues.put("Coll Sam", new Information("Hubert often stays late and is the last one to leave the building", true, suspects.get("Sam")));
     }
 
     void createSuspects() {

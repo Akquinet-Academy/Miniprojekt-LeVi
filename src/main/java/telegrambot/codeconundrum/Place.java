@@ -1,7 +1,6 @@
 package telegrambot.codeconundrum;
 
-public class Place {
-    String name;
+public class Place extends Source {
     String description;
 
     public Place(String name, String description) {

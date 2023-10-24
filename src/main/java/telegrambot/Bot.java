@@ -44,8 +44,8 @@ public class Bot extends TelegramLongPollingBot {
 
         // 4. analyze the text
         {
-            sendResponse(chatId, "I counted the letters in your message: " + messageReceived);
-            sendResponse(chatId, countLetters(messageReceived).toString());
+            //sendResponse(chatId, "I counted the letters in your message: " + messageReceived);
+            //sendResponse(chatId, countLetters(messageReceived).toString());
         }
     }
 

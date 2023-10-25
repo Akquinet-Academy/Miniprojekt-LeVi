@@ -5,48 +5,73 @@ import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegrambot.quiz.Quiz;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bot extends TelegramLongPollingBot {
+    boolean ongoing = true;
 
-    private Quiz q;
 
     @Override
     public void onUpdateReceived(Update update) {
+        //Message.enableHtml
         long chatId = update.getMessage().getChatId();
         String messageReceived = update.getMessage().getText();
         System.out.println(messageReceived);
 
         // start to evaluate the messages you received
         // 1. Main menu
-        if (messageReceived.toLowerCase().startsWith("hello")) {
-            sendResponse(chatId, "Welcome, human being 🤖");
-            sendResponse(chatId, "Let's have some fun now.... 😎");
-            sendResponse(chatId, "1. Type 'quiz', if you want me to ask you something smart");
-            sendResponse(chatId, "2. Type any text, if you want me to count its letters");
+        if (messageReceived.toLowerCase().startsWith("/start")) {
+            sendResponse(chatId, "Quick, detective, we've got a Code Conundrum! \uD83D\uDD75\uFE0F");
+            sendResponse(chatId, "Critical GitHub branches vanished, possibly due to a phishing email. You must investigate in the IT department and interrogate 5 suspects.");
+            sendResponse(chatId, "<b>Larry Lint</b>: Careless developer.\n\n" +
+                    "<b>Rita Codecrunch</b>: Puzzle lover who leaves riddles.\n\n" +
+                    "<b>Sam Phishmaster</b>: Social engineering expert.\n\n" +
+                    "<b>Maggie Clickson</b>: Click-happy internet enthusiast.\n\n" +
+                    "<b>Hubert Norton</b>: Meticulous IT character.");
+            sendResponse(chatId, "Search these locations for clues:\n" +
+                    "\n" +
+                    "<b>Desks</b>: Larry's chaos, Rita's riddles, Sam's deception, Maggie's internet finds, and Hubert's secrecy.\n\n" +
+                    "<b>Server Room</b>: The heart of the digital mystery.\n\n" +
+                    "<b>Cafeteria</b>: Where secrets might slip during coffee breaks.");
+            sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands.");
+        }
+        while (ongoing) {
+            sendResponse(chatId, "What do you want to do?");
+            createButtons();
         }
 
-        // 2. quiz mode
-        if (messageReceived.toLowerCase().startsWith("quiz")) {
-           q = new Quiz();
-           sendResponse(chatId, q.getRandomQuestion().toString());
-        }
+    }
 
-        // 3. create a poll
-        if (messageReceived.toLowerCase().startsWith("poll")) {
-            sendPollToUser(chatId);
-        } else
+    private void createButtons() {
+        //Menü 1
+        InlineKeyboardButton suspect = InlineKeyboardButton.builder().text("Interrogate a suspect").callbackData("suspect").build();
+        InlineKeyboardButton place = InlineKeyboardButton.builder().text("Investigate a location").callbackData("place").build();
+        InlineKeyboardButton accusation = InlineKeyboardButton.builder().text("Make an accusation and end the game").callbackData("accusation").build();
+        //Menü suspects
+        InlineKeyboardButton larry = InlineKeyboardButton.builder().text("Interrogate Larry").callbackData("larry").build();
+        InlineKeyboardButton rita = InlineKeyboardButton.builder().text("Interrogate Rita").callbackData("rita").build();
+        InlineKeyboardButton sam = InlineKeyboardButton.builder().text("Interrogate Sam").callbackData("sam").build();
+        InlineKeyboardButton maggie = InlineKeyboardButton.builder().text("Interrogate Maggie").callbackData("maggie").build();
+        InlineKeyboardButton hubert = InlineKeyboardButton.builder().text("Interrogate Hubert").callbackData("hubert").build();
+        //Menü places
+        InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();
+        InlineKeyboardButton cafeteria = InlineKeyboardButton.builder().text("Investigate Cafeteria").callbackData("cafeteria").build();
+        InlineKeyboardButton desks = InlineKeyboardButton.builder().text("Investigate desks").callbackData("desks").build();
+        //Menü desks
+        InlineKeyboardButton larrysDesk = InlineKeyboardButton.builder().text("Investigate Larry's desk").callbackData("larrysDesk").build();
+        InlineKeyboardButton ritasDesk = InlineKeyboardButton.builder().text("Investigate Rita's desk").callbackData("ritasDesk").build();
+        InlineKeyboardButton samsDesk = InlineKeyboardButton.builder().text("Investigate Sam's desk").callbackData("samsDesk").build();
+        InlineKeyboardButton maggiesDesk = InlineKeyboardButton.builder().text("Investigate Maggie's desk").callbackData("maggiesDesk").build();
+        InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
 
-        // 4. analyze the text
-        {
-            //sendResponse(chatId, "I counted the letters in your message: " + messageReceived);
-            //sendResponse(chatId, countLetters(messageReceived).toString());
-        }
+
+
     }
 
     /**
@@ -75,6 +100,8 @@ public class Bot extends TelegramLongPollingBot {
         SendMessage msg = new SendMessage();
         msg.setChatId(chatId);
         msg.setText(s);
+        msg.setParseMode("HTML");
+        //msg.wait(500);
 
         try {
             execute(msg);

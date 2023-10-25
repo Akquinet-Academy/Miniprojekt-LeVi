@@ -10,4 +10,13 @@ public class Information {
         this.isCaseRelevant = isCaseRelevant;
         this.whereToFind = whereToFind;
     }
+
+    public Source getWhereToFind() {
+        return whereToFind;
+    }
+
+    @Override
+    public String toString() {
+        return description;
+    }
 }

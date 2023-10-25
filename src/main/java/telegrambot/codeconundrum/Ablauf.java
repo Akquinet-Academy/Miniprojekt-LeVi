@@ -8,9 +8,9 @@ public class Ablauf {
     - Verdächtige
     - Namen für den Detektiv
     - Fall
-    - Highscore Zahl der benötigten Fragen
+    - (Highscore Zahl der benötigten Fragen)
 
-    Quick, detective, there's been a murder!
+    Quick, detective, there's been an incident!
     We need your expertise!
     What shall we call you?
     Fall vorstellen
@@ -23,7 +23,7 @@ public class Ablauf {
     - (Spiel neu starten, abbrechen)
 
     Fall auflösen: Abgleich mit Täter, nach Keywords aus den Hinweisen suchen für Begründung (Motive, Means, Opportunity)
-    ansonsten: Täter ist entkommen oder Beweislast nicht ausreichend
+    ansonsten: Täter ist entkommen oder Beweislast nicht ausreichend --> Ende
 
 
 

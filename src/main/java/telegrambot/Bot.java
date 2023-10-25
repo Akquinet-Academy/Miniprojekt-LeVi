@@ -3,18 +3,23 @@ package telegrambot;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bot extends TelegramLongPollingBot {
     boolean ongoing = true;
+    private InlineKeyboardMarkup mainMenu;
+    private InlineKeyboardMarkup suspectMenu;
+    private InlineKeyboardMarkup questionsMenu;
+    private InlineKeyboardMarkup placesMenu;
+    private InlineKeyboardMarkup desksMenu;
+    long chatId;
 
 
     @Override
@@ -41,42 +46,86 @@ public class Bot extends TelegramLongPollingBot {
                     "<b>Cafeteria</b>: Where secrets might slip during coffee breaks.");
             sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands.");
         }
-        while (ongoing) {
-            sendResponse(chatId, "What do you want to do?");
-            createButtons();
+        createButtons();
+        //while (ongoing) {
+            sendMenu(mainMenu, chatId);
+            //update = this.up
+            if (update.hasCallbackQuery()) {
+                    String callbackData = update.getCallbackQuery().getData();
+                    switch (callbackData) {
+                    case "suspect" -> sendSuspectMenu();
+                    case "place" -> sendMenu(placesMenu, chatId);
+                    case "accusation" -> checkAccusation();
+                    }
+           // }
+                //ongoing = false;
+
         }
 
     }
 
-    private void createButtons() {
-        //Menü 1
+    private void sendSuspectMenu() {
+        sendResponse(chatId, "Hat geklappt");
+        //sendMenu(suspectMenu, chatId);
+        //if (update.hasCallbackQuery())
+    }
+
+    void checkAccusation() {
+        ongoing = false;
+    }
+
+    private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
+        SendMessage sm = SendMessage.builder().text("What do you want to do?").chatId(chatId)
+                .replyMarkup(keyboard).build();
+
+        try {
+            execute(sm);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void createButtons() {
+        //Main menu
         InlineKeyboardButton suspect = InlineKeyboardButton.builder().text("Interrogate a suspect").callbackData("suspect").build();
         InlineKeyboardButton place = InlineKeyboardButton.builder().text("Investigate a location").callbackData("place").build();
         InlineKeyboardButton accusation = InlineKeyboardButton.builder().text("Make an accusation and end the game").callbackData("accusation").build();
+        mainMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(suspect, place)).keyboardRow(List.of(accusation)).build();
+
         //Menü suspects
-        InlineKeyboardButton larry = InlineKeyboardButton.builder().text("Interrogate Larry").callbackData("larry").build();
+        InlineKeyboardButton larry = createKeyboardButton("Interrogate Larry", "larry");
         InlineKeyboardButton rita = InlineKeyboardButton.builder().text("Interrogate Rita").callbackData("rita").build();
         InlineKeyboardButton sam = InlineKeyboardButton.builder().text("Interrogate Sam").callbackData("sam").build();
         InlineKeyboardButton maggie = InlineKeyboardButton.builder().text("Interrogate Maggie").callbackData("maggie").build();
         InlineKeyboardButton hubert = InlineKeyboardButton.builder().text("Interrogate Hubert").callbackData("hubert").build();
+        InlineKeyboardButton back = InlineKeyboardButton.builder().text("<<").callbackData("back").build();
+        suspectMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie, back)).build();
+
         //Menü places
         InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();
         InlineKeyboardButton cafeteria = InlineKeyboardButton.builder().text("Investigate Cafeteria").callbackData("cafeteria").build();
         InlineKeyboardButton desks = InlineKeyboardButton.builder().text("Investigate desks").callbackData("desks").build();
+        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom, cafeteria, desks, back)).build();
+
         //Menü desks
         InlineKeyboardButton larrysDesk = InlineKeyboardButton.builder().text("Investigate Larry's desk").callbackData("larrysDesk").build();
         InlineKeyboardButton ritasDesk = InlineKeyboardButton.builder().text("Investigate Rita's desk").callbackData("ritasDesk").build();
         InlineKeyboardButton samsDesk = InlineKeyboardButton.builder().text("Investigate Sam's desk").callbackData("samsDesk").build();
         InlineKeyboardButton maggiesDesk = InlineKeyboardButton.builder().text("Investigate Maggie's desk").callbackData("maggiesDesk").build();
         InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
+        desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk, ritasDesk, hubertsDesk, samsDesk, maggiesDesk, back)).build();
 
 
+    }
 
+    private static InlineKeyboardButton createKeyboardButton(String text, String callbackData) {
+        return InlineKeyboardButton.builder().text(text).callbackData(callbackData).build();
     }
 
     /**
      * This method counts the letters of a provided string parameter and saves them into a Map which is returned.
      * All letters are converted into lowercase. Digits and other non-letter characters are not counted.
+     *
      * @param input the string to be evaluated
      * @return a map containing the result of
      */

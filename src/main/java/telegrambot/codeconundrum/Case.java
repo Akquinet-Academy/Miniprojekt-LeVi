@@ -34,6 +34,7 @@ public class Case {
     void createClues() {
         HashMap<String, Information> clues = new HashMap<>();
         //clues.put("", new Information("", false));
+
         //Hinweise an Orten zu finden
         clues.put("Security cam", new Information("You go through the security cam footage from yesterday. Both Hubert and Sam have been to the server room.", true, places.get("Server Room")));
         clues.put("SR desktop", new Information("Rows of towering server racks hum softly under the glow of blue status lights. At one end, an unassuming workstation blinks with lines of code on its screen, offering anonymous access to the repository.", true, places.get("Server Room")));
@@ -56,8 +57,19 @@ public class Case {
         clues.put("red herring", new Information("Amidst the remarkable neatness on Hubert's desk, a somewhat unexpected sight catches your eye: a container of red beet herring salad from Aldi.", false, places.get("Hubert's desk")));
         clues.put("fork/napkin", new Information("A lone stainless steel fork and a neatly folded paper napkin stand ready for action. Hubert doesn't seem to frequent the cafeteria too often.", false, places.get("Hubert's desk")));
         //Hinweise im Gespräch mit Personen zu finden
+        clues.put("Motive Larry", new Information("The internet is my home - and I mean, all of the internet. Thank God for the Tor browser...", false, suspects.get("Larry")));
+        clues.put("Coll Larry", new Information("Sam bragged at lunch the other day how he manipulates people with his social engineering skills.", false, suspects.get("Larry")));
+        clues.put("Motive Rita", new Information("The project has become so boring. At least we have a new riddle to solve now, huh?", false, suspects.get("Rita")));
+        clues.put("Coll Rita", new Information("Larry is always the first one to enter the office in the morning. Does he sleep here?", false, suspects.get("Rita")));
+        clues.put("Motive Sam", new Information("It's my responsibility to train my colleagues so that they recognize phishing attacks and I do use some unorthodox methods. But I would never hurt the company of course!", false, suspects.get("Sam")));
+        // Coll Sam down below
+        clues.put("Motive Maggie", new Information("I love, love, LOVE everything that blinks! And cats! Have you seen this cute video? Don't you worry about the popup ads, just click them away.", false, suspects.get("Maggie")));
+        clues.put("Coll Maggie", new Information("Rita never wants to come along for lunch, she disappears for an hour and reappears back at her desk.", false, suspects.get("Maggie")));
+        // Motive Hubert down below
+        clues.put("Coll Hubert", new Information("Maggie seems to be really nervous recently. What is she hiding?", false, suspects.get("Hubert")));
+
         //Hinweise für die Auflösung
-        clues.put("Motive Hubert", new Information("All these commits are so annoying, such chaos! I just want to work on my code in peace, I'm glad someone took initiative.", true, culprit));
+        clues.put("Motive Hubert", new Information("All these commits are so annoying, such chaos! I just want to work on my code in peace, I'm glad someone took initiative.", true, suspects.get("Hubert")));
         clues.put("SR list", new Information("Next to the door, there is a list of all authorized personell: \nSam Phishmaster \nHubert Norton \nRita Codecrunch", true, places.get("Server Room")));
         clues.put("Coll Sam", new Information("Hubert often stays late and is the last one to leave the building", true, suspects.get("Sam")));
     }

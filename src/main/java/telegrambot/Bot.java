@@ -40,7 +40,7 @@ public class Bot extends TelegramLongPollingBot {
                     "<b>Hubert Norton</b>: Meticulous IT character.");
             sendResponse(chatId, "Search these locations for clues:\n" +
                     "\n" +
-                    "<b>Desks</b>: Larry's chaos, Rita's riddles, Sam's deception, Maggie's internet finds, and Hubert's secrecy.\n\n" +
+                    "<b>Desks</b>: Larry's chaos, Rita's riddles, Hubert's secrecy, Sam's deception, and Maggie's internet finds.\n\n" +
                     "<b>Server Room</b>: The heart of the digital mystery.\n\n" +
                     "<b>Cafeteria</b>: Where secrets might slip during coffee breaks.");
             sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands.");
@@ -51,7 +51,7 @@ public class Bot extends TelegramLongPollingBot {
             String callbackData = update.getCallbackQuery().getData();
             switch (callbackData) {
                 //case "/start": onUpdateReceived(update); sendMenu(mainMenu, chatId); break;
-                case "suspect": sendSuspectMenu(chatId); break;
+                case "suspect": sendMenu(suspectMenu, chatId); break;
                 case "place": sendMenu(placesMenu, chatId); break;
                 case "accusation": checkAccusation(); break;
             }
@@ -80,11 +80,6 @@ public class Bot extends TelegramLongPollingBot {
         //update.getMessage()//.getText();
     }
 
-    private void sendSuspectMenu(long chatId) {
-        //sendResponse(chatId, "Hat geklappt");
-        sendMenu(suspectMenu, chatId);
-        //if (update.hasCallbackQuery())
-    }
 
     void checkAccusation() {
         ongoing = false;
@@ -121,6 +116,11 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton hubert = InlineKeyboardButton.builder().text("Hubert").callbackData("hubert").build();
         //InlineKeyboardButton back = InlineKeyboardButton.builder().text("<<").callbackData("back").build();
         suspectMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
+
+        //Menü questions
+        InlineKeyboardButton role = createKeyboardButton("Tell me about your role in the project", "role");
+        InlineKeyboardButton suspicion = createKeyboardButton("Did you notice anyone acting suspiciously?", "suspicion");
+        questionsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(role)).keyboardRow(List.of(suspicion)).build();
 
         //Menü places
         InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();

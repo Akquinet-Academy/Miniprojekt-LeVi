@@ -103,13 +103,13 @@ public class Case {
 
     void createPlaces() {
         HashMap<String, Place> places = new HashMap<>();
-        places.put("Server Room", new Place("Server Room", "You are standing in the company's server room. \uD83D\uDDB3"));
+        places.put("Server Room", new Place("Server Room", "You are standing in the company's server room. \uD83D\uDDA5\uFE0F"));
         places.put("Cafeteria", new Place("Cafeteria", "You are standing in the company's cafeteria. \uD83C\uDF4E"));
-        places.put("Larry's desk", new Place("Larry's desk", "You are standing in front of Larry's desk. \uD83D\uDC08"));
-        places.put("Rita's desk", new Place("Rita's desk", "You are standing in front of Rita's desk. \uD83D\uDDB3"));
-        places.put("Sam's desk", new Place("Sam's desk", "You are standing in front of Sam's desk. \uD83D\uDC08"));
+        places.put("Larry's desk", new Place("Larry's desk", "You are standing in front of Larry's desk. \uD83D\uDDD2\uFE0F"));
+        places.put("Rita's desk", new Place("Rita's desk", "You are standing in front of Rita's desk. \uD83C\uDFB2"));
+        places.put("Sam's desk", new Place("Sam's desk", "You are standing in front of Sam's desk. \uD83D\uDCDA"));
         places.put("Maggie's desk", new Place("Maggie's desk", "You are standing in front of Maggie's desk. \uD83D\uDC08"));
-        places.put("Hubert's desk", new Place("Hubert's desk", "You are standing in front of Hubert's desk. \uD83D\uDDB3"));
+        places.put("Hubert's desk", new Place("Hubert's desk", "You are standing in front of Hubert's desk. \uD83C\uDF7D\uFE0F"));
         this.places = places;
     }
 

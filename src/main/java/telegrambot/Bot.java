@@ -1,23 +1,19 @@
 package telegrambot;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegrambot.codeconundrum.Case;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class Bot extends TelegramLongPollingBot {
     boolean ongoing = true;
     private InlineKeyboardMarkup mainMenu;
     private InlineKeyboardMarkup suspectMenu;
-    private InlineKeyboardMarkup questionsMenu;
     private InlineKeyboardMarkup placesMenu;
     private InlineKeyboardMarkup desksMenu;
     private InlineKeyboardMarkup accuseSuspectsMenu;
@@ -25,14 +21,12 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        //Message.enableHtml
         long chatId = getChatId(update);
         String messageReceived = getMessage(update);
         System.out.println(messageReceived);
         gitHubChaos = new Case();
 
-        // start to evaluate the messages you received
-        // 1. Main menu
+        // Start of the game
         if (messageReceived.toLowerCase().startsWith("/start")) {
             sendResponse(chatId, "Quick, detective, we've got a Code Conundrum! \uD83D\uDD75\uFE0F");
             sendResponse(chatId, "Critical GitHub branches vanished, possibly due to a phishing email. You must investigate in the IT department and interrogate 5 suspects.");
@@ -49,7 +43,7 @@ public class Bot extends TelegramLongPollingBot {
             sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands. \nWhat do you want to do?");
         }
         createButtons();
-        //while (ongoing) {
+
         if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             switch (callbackData) {
@@ -75,9 +69,6 @@ public class Bot extends TelegramLongPollingBot {
         } else {
             sendMenu(mainMenu, chatId);
         }
-        // }
-        //ongoing = false;
-
     }
 
     private String sendConfession() {
@@ -94,10 +85,9 @@ public class Bot extends TelegramLongPollingBot {
 
     private String getMessage(Update update) {
         if (update.hasCallbackQuery()) {
-            return update.getCallbackQuery().getData();//.getMessage();
+            return update.getCallbackQuery().getData();
         }
-        return update.getMessage().getText();//sendErrorMessage(chatId);
-        //update.getMessage()//.getText();
+        return update.getMessage().getText();
     }
 
 
@@ -105,16 +95,6 @@ public class Bot extends TelegramLongPollingBot {
         sendResponse(chatId, "<b>Present your solution: </b>");
         sendResponse(chatId, "Who is the culprit?");
         sendMenu(accuseSuspectsMenu, chatId);
-
-
-
-
-    gitHubChaos.getSolution();
-        /*solution.put("Culprit", "Hubert");
-        solution.put("Motive", "Annoyance");
-        solution.put("Place", "Server Room");*/
-
-        //ongoing = false;
     }
 
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
@@ -144,16 +124,16 @@ public class Bot extends TelegramLongPollingBot {
         //InlineKeyboardButton back = InlineKeyboardButton.builder().text("<<").callbackData("back").build();
         suspectMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
 
-        //Menü questions
+        /*Menü questions
         InlineKeyboardButton role = createKeyboardButton("Tell me about your role in the project", "role");
         InlineKeyboardButton suspicion = createKeyboardButton("Did you notice anyone acting suspiciously?", "suspicion");
-        questionsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(role)).keyboardRow(List.of(suspicion)).build();
+        questionsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(role)).keyboardRow(List.of(suspicion)).build();*/
 
         //Menü places
         InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();
         InlineKeyboardButton cafeteria = InlineKeyboardButton.builder().text("Investigate Cafeteria").callbackData("cafeteria").build();
         InlineKeyboardButton desks = InlineKeyboardButton.builder().text("Investigate desks").callbackData("desks").build();
-        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom)).keyboardRow(List.of(cafeteria)).keyboardRow(List.of(desks)).build();
+        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(desks)).keyboardRow(List.of(cafeteria)).keyboardRow(List.of(serverRoom)).build();
 
         //Menü desks
         InlineKeyboardButton larrysDesk = InlineKeyboardButton.builder().text("Investigate Larry's desk").callbackData("larrysDesk").build();
@@ -181,8 +161,6 @@ public class Bot extends TelegramLongPollingBot {
         msg.setChatId(chatId);
         msg.setText(s);
         msg.enableHtml(true);
-        //msg.setParseMode("HTML");
-        //msg.wait(500);
 
         try {
             execute(msg);

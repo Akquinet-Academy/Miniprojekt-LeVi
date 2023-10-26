@@ -1,14 +1,9 @@
 package telegrambot.codeconundrum;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Case {
-    Person culprit;
-    Information motive;
-    Information means;
-    Information opportunity;
     HashMap<String, Person> suspects;
     HashMap<String, Place> places;
 

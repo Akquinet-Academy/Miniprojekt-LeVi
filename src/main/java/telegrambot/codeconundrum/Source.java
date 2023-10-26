@@ -1,7 +1,6 @@
 package telegrambot.codeconundrum;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Source {
     String name;

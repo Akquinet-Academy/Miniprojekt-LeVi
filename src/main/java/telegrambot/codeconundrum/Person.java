@@ -1,7 +1,5 @@
 package telegrambot.codeconundrum;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Person extends Source {
 

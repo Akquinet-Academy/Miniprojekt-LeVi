@@ -46,7 +46,7 @@ public class Bot extends TelegramLongPollingBot {
                     "<b>Desks</b>: Larry's chaos, Rita's riddles, Hubert's secrecy, Sam's deception, and Maggie's internet finds.\n\n" +
                     "<b>Server Room</b>: The heart of the digital mystery.\n\n" +
                     "<b>Cafeteria</b>: Where secrets might slip during coffee breaks.");
-            sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands.");
+            sendResponse(chatId, "Get ready to crack the case, detective, and save the project! The fate of the code is in your hands. \nWhat do you want to do?");
         }
         createButtons();
         //while (ongoing) {
@@ -118,7 +118,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
-        SendMessage sm = SendMessage.builder().text("What do you want to do? Choose from these options:").chatId(chatId)
+        SendMessage sm = SendMessage.builder().text("Choose from these options:").chatId(chatId)
                 .replyMarkup(keyboard).build();
 
         try {

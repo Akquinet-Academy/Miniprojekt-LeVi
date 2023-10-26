@@ -25,8 +25,8 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         //Message.enableHtml
-        long chatId = update.getMessage().getChatId();
-        String messageReceived = update.getMessage().getText();
+        long chatId = getChatId(update);
+        String messageReceived = getMessage(update);
         System.out.println(messageReceived);
 
         // start to evaluate the messages you received
@@ -48,30 +48,51 @@ public class Bot extends TelegramLongPollingBot {
         }
         createButtons();
         //while (ongoing) {
+        if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            switch (callbackData) {
+                case "suspect" -> sendSuspectMenu();
+                case "place" -> sendMenu(placesMenu, chatId);
+                case "accusation" -> checkAccusation();
+            }
+        } else {
             sendMenu(mainMenu, chatId);
-            //update = this.up
-            if (update.hasCallbackQuery()) {
-                    String callbackData = update.getCallbackQuery().getData();
-                    switch (callbackData) {
-                    case "suspect" -> sendSuspectMenu();
-                    case "place" -> sendMenu(placesMenu, chatId);
-                    case "accusation" -> checkAccusation();
-                    }
-           // }
-                //ongoing = false;
-
         }
+        // }
+        //ongoing = false;
 
     }
 
+
+
+    private long getChatId(Update update) {
+        if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getMessage().getChatId();
+        }
+        return update.getMessage().getChatId();
+    }
+
+    private String getMessage(Update update) {
+        if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getData();//.getMessage();
+        }
+        return sendErrorMessage(chatId);
+        //update.getMessage()//.getText();
+    }
+
     private void sendSuspectMenu() {
-        sendResponse(chatId, "Hat geklappt");
-        //sendMenu(suspectMenu, chatId);
+        //sendResponse(chatId, "Hat geklappt");
+        sendMenu(suspectMenu, chatId);
         //if (update.hasCallbackQuery())
     }
 
     void checkAccusation() {
         ongoing = false;
+    }
+
+    private String sendErrorMessage(long chatId) {
+        sendResponse(chatId, "Please choose one of the options. ");
+        return "Try again";
     }
 
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
@@ -85,7 +106,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    void createButtons() {
+    private void createButtons() {
         //Main menu
         InlineKeyboardButton suspect = InlineKeyboardButton.builder().text("Interrogate a suspect").callbackData("suspect").build();
         InlineKeyboardButton place = InlineKeyboardButton.builder().text("Investigate a location").callbackData("place").build();

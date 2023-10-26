@@ -69,8 +69,8 @@ public class Bot extends TelegramLongPollingBot {
                 case "samsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Sam's desk").toString());
                 case "maggiesDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Maggie's desk").toString());
                 case "hubertsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Hubert's desk").toString());
-                case "accuseWrong" -> sendResponse(chatId, "Wrong! The culprit got away.");
-                case "accuseHubert" -> sendResponse(chatId, sendConfession());
+                case "accuseWrong" -> sendResponse(chatId, "Wrong! The culprit got away and the branches are lost forever \uD83D\uDE14");
+                case "accusehubert" -> sendResponse(chatId, sendConfession());
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -81,7 +81,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private String sendConfession() {
-        return "Congratulations, detective!\nHubert breaks down:\nIt all started with a clumsy mistake on my part, a critical code change I couldn't admit to. To protect my reputation, I resorted to a dangerous deception. I erased the GitHub branches and staged a phishing attack from the server room, hoping to shift blame away from me. My desperate attempt at misdirection had led to this mess.";
+        return "\uD83C\uDF89<b>Congratulations, detective!</b>\uD83C\uDF89\n\nHubert breaks down:\n\n\"It all started with a clumsy mistake on my part, a critical code change I couldn't admit to. To protect my reputation, I resorted to a dangerous deception. I erased the GitHub branches and staged a phishing attack from the server room, hoping to shift blame away from me. But I didn't account for such a capable detective.\"";
     }
 
 

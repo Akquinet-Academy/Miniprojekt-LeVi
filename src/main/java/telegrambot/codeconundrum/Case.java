@@ -59,7 +59,7 @@ public class Case {
         clues.put("USB Stick", new Information("You spot a USB stick labeled 'Try me' left on an empty chair. As you eye this digital rabbit hole, you can't help but wonder if it's a potential social engineering attempt.", false, places.get("Cafeteria")));
         clues.put("kinder egg", new Information("You notice a collection of Kinder Surprise eggs, a rather unusual find given their banned importation.", false, places.get("Larry's desk")));
         clues.put("chaos", new Information("Larry's desk is an absolute mess, cluttered with scattered papers, tangled wires, and the unmistakable evidence of past coffee spills.", false, places.get("Larry's desk")));
-        clues.put("Larry's notes", new Information("You come across a collection of handwritten notes that seem to reflect his frustration and confusion. Among them, you notice scribbles that repeatedly question, \"How can I undo the mistake?\" ", false, places.get("Larry's desk")));
+        clues.put("Larry's notes", new Information("You come across a collection of handwritten notes that seem to reflect his frustration and confusion. Among them, you notice scribbles that repeatedly question, \"How can I undo the mistake?\". ", false, places.get("Larry's desk")));
         clues.put("scented candle", new Information("You can't miss a gigantic scented candle, taking up a significant portion of the workspace. Its presence is quite overwhelming, emitting a pleasant yet overpowering fragrance that permeates the surrounding area.\" ", false, places.get("Rita's desk")));
         clues.put("puzzle books", new Information("Among the items on Rita's desk, you come across a collection of puzzle books, including Sudoku and crossword puzzles. It's as if she wishes to make the office environment a tad more thrilling.", false, places.get("Rita's desk")));
         clues.put("rubik's cube", new Information("You notice a Rubik's Cube, its colorful facets partially twisted and in various states of completion.", false, places.get("Rita's desk")));
@@ -67,7 +67,7 @@ public class Case {
         clues.put("movie poster", new Information("Hanging on the wall, a framed movie poster for \"The Stanford Prison Experiment\" catches your attention.", false, places.get("Sam's desk")));
         clues.put("family photo", new Information("A family photo frame stands prominently. It captures a tender moment of Sam's family, showcasing his wife and child.", false, places.get("Sam's desk")));
         clues.put("glitter stuff", new Information("Maggie's desk is a shimmering wonderland of sparkly trinkets and glittery decorations, from iridescent pens to glistening stationery.", false, places.get("Maggie's desk")));
-        clues.put("ADHD medication", new Information("You notice a small, neatly arranged container of her prescribed ADHD medication", false, places.get("Maggie's desk")));
+        clues.put("ADHD medication", new Information("You notice a small, neatly arranged container of her prescribed ADHD medication.", false, places.get("Maggie's desk")));
         clues.put("ENTER", new Information("An unusually large \"Enter\" key serves as an attention-grabbing desk accessory. Its size and prominent position make you wonder if someone might have accidentally pressed it.", false, places.get("Maggie's desk")));
         clues.put("order", new Information("Everything is meticulously arranged, from perfectly aligned pens to orderly stacked documents.", false, places.get("Hubert's desk")));
         clues.put("red herring", new Information("Amidst the remarkable neatness on Hubert's desk, a somewhat unexpected sight catches your eye: a container of red beet herring salad from Aldi.", false, places.get("Hubert's desk")));
@@ -86,7 +86,7 @@ public class Case {
 
         //Hinweise für die Auflösung
         clues.put("Motive Hubert", new Information("All these commits are so annoying, such chaos! I just want to work on my code in peace, I'm glad someone took initiative.", true, suspects.get("Hubert")));
-        clues.put("SR list", new Information("Next to the door, there is a list of all authorized personell: \nSam Phishmaster \nHubert Norton \nRita Codecrunch", true, places.get("Server Room")));
+        clues.put("SR list", new Information("Next to the door, there is a list of all authorized personell: \n\nSam Phishmaster \nHubert Norton \nRita Codecrunch", true, places.get("Server Room")));
         clues.put("Coll Sam", new Information("Hubert often stays late and is the last one to leave the building", true, suspects.get("Sam")));
         this.clues = clues;
     }
@@ -103,13 +103,13 @@ public class Case {
 
     void createPlaces() {
         HashMap<String, Place> places = new HashMap<>();
-        places.put("Server Room", new Place("Server Room", "You are standing in the company's server room."));
-        places.put("Cafeteria", new Place("Cafeteria", "You are standing in the company's cafeteria."));
-        places.put("Larry's desk", new Place("Larry's desk", "You are standing in front of Larry's desk"));
-        places.put("Rita's desk", new Place("Rita's desk", "You are standing in front of Rita's desk"));
-        places.put("Sam's desk", new Place("Sam's desk", "You are standing in front of Sam's desk"));
-        places.put("Maggie's desk", new Place("Maggie's desk", "You are standing in front of Maggie's desk"));
-        places.put("Hubert's desk", new Place("Hubert's desk", "You are standing in front of Hubert's desk"));
+        places.put("Server Room", new Place("Server Room", "You are standing in the company's server room. \uD83D\uDDB3"));
+        places.put("Cafeteria", new Place("Cafeteria", "You are standing in the company's cafeteria. \uD83C\uDF4E"));
+        places.put("Larry's desk", new Place("Larry's desk", "You are standing in front of Larry's desk. \uD83D\uDC08"));
+        places.put("Rita's desk", new Place("Rita's desk", "You are standing in front of Rita's desk. \uD83D\uDDB3"));
+        places.put("Sam's desk", new Place("Sam's desk", "You are standing in front of Sam's desk. \uD83D\uDC08"));
+        places.put("Maggie's desk", new Place("Maggie's desk", "You are standing in front of Maggie's desk. \uD83D\uDC08"));
+        places.put("Hubert's desk", new Place("Hubert's desk", "You are standing in front of Hubert's desk. \uD83D\uDDB3"));
         this.places = places;
     }
 

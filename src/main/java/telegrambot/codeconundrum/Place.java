@@ -10,12 +10,5 @@ public class Place extends Source {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        String out = name + "\n" + description;
-        for (Map.Entry<String, Information> answer : answers.entrySet()) {
-            out += "\n" + answer.getValue().toString();
-        }
-        return out;
-    }
+
 }

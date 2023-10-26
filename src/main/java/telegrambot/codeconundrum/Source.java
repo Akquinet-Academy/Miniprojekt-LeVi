@@ -1,6 +1,7 @@
 package telegrambot.codeconundrum;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Source {
     String name;
@@ -10,7 +11,11 @@ public abstract class Source {
 
     @Override
     public String toString() {
-        return name;
+        String out = name + "\n";
+        for (Map.Entry<String, Information> answer : answers.entrySet()) {
+            out += "\n" + answer.getValue().toString();
+        }
+        return out;
     }
 
     public void addAnswers(String key, Information value) {

@@ -35,9 +35,9 @@ public class Bot extends TelegramLongPollingBot {
             sendResponse(chatId, "Critical GitHub branches vanished, possibly due to a phishing email. You must investigate in the IT department and interrogate 5 suspects.");
             sendResponse(chatId, "<b>Larry Lint</b>: Careless developer.\n\n" +
                     "<b>Rita Codecrunch</b>: Puzzle lover who leaves riddles.\n\n" +
+                    "<b>Hubert Norton</b>: Meticulous IT character.\n\n" +
                     "<b>Sam Phishmaster</b>: Social engineering expert.\n\n" +
-                    "<b>Maggie Clickson</b>: Click-happy internet enthusiast.\n\n" +
-                    "<b>Hubert Norton</b>: Meticulous IT character.");
+                    "<b>Maggie Clickson</b>: Click-happy internet enthusiast.");
             sendResponse(chatId, "Search these locations for clues:\n" +
                     "\n" +
                     "<b>Desks</b>: Larry's chaos, Rita's riddles, Sam's deception, Maggie's internet finds, and Hubert's secrecy.\n\n" +
@@ -50,10 +50,11 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             switch (callbackData) {
-                //case "/start": onUpdateReceived(update); sendMenu(mainMenu, chatId); break;
-                case "suspect": sendSuspectMenu(chatId); break;
-                case "place": sendMenu(placesMenu, chatId); break;
-                case "accusation": checkAccusation(); break;
+                case "suspect" -> sendMenu(suspectMenu, chatId);
+                case "place" -> sendMenu(placesMenu, chatId);
+                case "accusation" -> checkAccusation();
+                case "larry", "rita", "sam", "maggie", "hubert" -> sendMenu(questionsMenu, chatId);
+                case "desks" -> sendMenu(desksMenu, chatId);
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -78,12 +79,6 @@ public class Bot extends TelegramLongPollingBot {
         }
         return update.getMessage().getText();//sendErrorMessage(chatId);
         //update.getMessage()//.getText();
-    }
-
-    private void sendSuspectMenu(long chatId) {
-        //sendResponse(chatId, "Hat geklappt");
-        sendMenu(suspectMenu, chatId);
-        //if (update.hasCallbackQuery())
     }
 
     void checkAccusation() {
@@ -126,7 +121,7 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();
         InlineKeyboardButton cafeteria = InlineKeyboardButton.builder().text("Investigate Cafeteria").callbackData("cafeteria").build();
         InlineKeyboardButton desks = InlineKeyboardButton.builder().text("Investigate desks").callbackData("desks").build();
-        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom, cafeteria, desks)).build();
+        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom, cafeteria)).keyboardRow(List.of(desks)).build();
 
         //Menü desks
         InlineKeyboardButton larrysDesk = InlineKeyboardButton.builder().text("Investigate Larry's desk").callbackData("larrysDesk").build();
@@ -134,7 +129,7 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton samsDesk = InlineKeyboardButton.builder().text("Investigate Sam's desk").callbackData("samsDesk").build();
         InlineKeyboardButton maggiesDesk = InlineKeyboardButton.builder().text("Investigate Maggie's desk").callbackData("maggiesDesk").build();
         InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
-        desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk, ritasDesk, hubertsDesk, samsDesk, maggiesDesk)).build();
+        desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk)).keyboardRow(List.of(ritasDesk)).keyboardRow(List.of(hubertsDesk)).keyboardRow(List.of(samsDesk)).keyboardRow(List.of(maggiesDesk)).build();
 
 
     }

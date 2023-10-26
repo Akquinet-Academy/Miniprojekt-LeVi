@@ -19,7 +19,6 @@ public class Bot extends TelegramLongPollingBot {
     private InlineKeyboardMarkup questionsMenu;
     private InlineKeyboardMarkup placesMenu;
     private InlineKeyboardMarkup desksMenu;
-    long chatId;
 
 
     @Override
@@ -51,9 +50,10 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             switch (callbackData) {
-                case "suspect" -> sendSuspectMenu();
-                case "place" -> sendMenu(placesMenu, chatId);
-                case "accusation" -> checkAccusation();
+                //case "/start": onUpdateReceived(update); sendMenu(mainMenu, chatId); break;
+                case "suspect": sendSuspectMenu(chatId); break;
+                case "place": sendMenu(placesMenu, chatId); break;
+                case "accusation": checkAccusation(); break;
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -67,7 +67,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private long getChatId(Update update) {
         if (update.hasCallbackQuery()) {
-            return update.getCallbackQuery().getMessage().getChatId();
+            return update.getCallbackQuery().getMessage().getChat().getId();
         }
         return update.getMessage().getChatId();
     }
@@ -76,11 +76,11 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             return update.getCallbackQuery().getData();//.getMessage();
         }
-        return sendErrorMessage(chatId);
+        return update.getMessage().getText();//sendErrorMessage(chatId);
         //update.getMessage()//.getText();
     }
 
-    private void sendSuspectMenu() {
+    private void sendSuspectMenu(long chatId) {
         //sendResponse(chatId, "Hat geklappt");
         sendMenu(suspectMenu, chatId);
         //if (update.hasCallbackQuery())
@@ -91,7 +91,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private String sendErrorMessage(long chatId) {
-        sendResponse(chatId, "Please choose one of the options. ");
+        sendResponse(chatId, "Please choose one of the options.");
         return "Try again";
     }
 
@@ -114,19 +114,19 @@ public class Bot extends TelegramLongPollingBot {
         mainMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(suspect, place)).keyboardRow(List.of(accusation)).build();
 
         //Menü suspects
-        InlineKeyboardButton larry = createKeyboardButton("Interrogate Larry", "larry");
-        InlineKeyboardButton rita = InlineKeyboardButton.builder().text("Interrogate Rita").callbackData("rita").build();
-        InlineKeyboardButton sam = InlineKeyboardButton.builder().text("Interrogate Sam").callbackData("sam").build();
-        InlineKeyboardButton maggie = InlineKeyboardButton.builder().text("Interrogate Maggie").callbackData("maggie").build();
-        InlineKeyboardButton hubert = InlineKeyboardButton.builder().text("Interrogate Hubert").callbackData("hubert").build();
-        InlineKeyboardButton back = InlineKeyboardButton.builder().text("<<").callbackData("back").build();
-        suspectMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie, back)).build();
+        InlineKeyboardButton larry = createKeyboardButton("Larry", "larry");
+        InlineKeyboardButton rita = InlineKeyboardButton.builder().text("Rita").callbackData("rita").build();
+        InlineKeyboardButton sam = InlineKeyboardButton.builder().text("Sam").callbackData("sam").build();
+        InlineKeyboardButton maggie = InlineKeyboardButton.builder().text("Maggie").callbackData("maggie").build();
+        InlineKeyboardButton hubert = InlineKeyboardButton.builder().text("Hubert").callbackData("hubert").build();
+        //InlineKeyboardButton back = InlineKeyboardButton.builder().text("<<").callbackData("back").build();
+        suspectMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
 
         //Menü places
         InlineKeyboardButton serverRoom = InlineKeyboardButton.builder().text("Investigate Server Room").callbackData("serverRoom").build();
         InlineKeyboardButton cafeteria = InlineKeyboardButton.builder().text("Investigate Cafeteria").callbackData("cafeteria").build();
         InlineKeyboardButton desks = InlineKeyboardButton.builder().text("Investigate desks").callbackData("desks").build();
-        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom, cafeteria, desks, back)).build();
+        placesMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(serverRoom, cafeteria, desks)).build();
 
         //Menü desks
         InlineKeyboardButton larrysDesk = InlineKeyboardButton.builder().text("Investigate Larry's desk").callbackData("larrysDesk").build();
@@ -134,7 +134,7 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton samsDesk = InlineKeyboardButton.builder().text("Investigate Sam's desk").callbackData("samsDesk").build();
         InlineKeyboardButton maggiesDesk = InlineKeyboardButton.builder().text("Investigate Maggie's desk").callbackData("maggiesDesk").build();
         InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
-        desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk, ritasDesk, hubertsDesk, samsDesk, maggiesDesk, back)).build();
+        desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk, ritasDesk, hubertsDesk, samsDesk, maggiesDesk)).build();
 
 
     }

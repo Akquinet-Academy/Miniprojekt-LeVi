@@ -70,7 +70,7 @@ public class Bot extends TelegramLongPollingBot {
                 case "maggiesDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Maggie's desk").toString());
                 case "hubertsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Hubert's desk").toString());
                 case "accuseWrong" -> sendResponse(chatId, "Wrong! The culprit got away.");
-                case "accuseHubert" -> sendResponse(chatId, "Wrong! The culprit got away.");
+                case "accuseHubert" -> sendResponse(chatId, sendConfession());
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -78,6 +78,10 @@ public class Bot extends TelegramLongPollingBot {
         // }
         //ongoing = false;
 
+    }
+
+    private String sendConfession() {
+        return "Congratulations, detective!\nHubert breaks down:\nIt all started with a clumsy mistake on my part, a critical code change I couldn't admit to. To protect my reputation, I resorted to a dangerous deception. I erased the GitHub branches and staged a phishing attack from the server room, hoping to shift blame away from me. My desperate attempt at misdirection had led to this mess.";
     }
 
 
@@ -165,7 +169,7 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton sussam = InlineKeyboardButton.builder().text("Sam").callbackData("accuseWrong").build();
         InlineKeyboardButton susmaggie = InlineKeyboardButton.builder().text("Maggie").callbackData("accuseWrong").build();
         InlineKeyboardButton sushubert = InlineKeyboardButton.builder().text("Hubert").callbackData("accusehubert").build();
-        accuseSuspectsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
+        accuseSuspectsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(suslarry, susrita, sushubert, sussam, susmaggie)).build();
     }
 
     private static InlineKeyboardButton createKeyboardButton(String text, String callbackData) {

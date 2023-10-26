@@ -16,4 +16,8 @@ public abstract class Source {
     public void addAnswers(String key, Information value) {
         answers.put(key, value);
     }
+
+    public HashMap<String, Information> getAnswers() {
+        return answers;
+    }
 }

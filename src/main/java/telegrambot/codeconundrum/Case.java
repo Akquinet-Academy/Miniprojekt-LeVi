@@ -11,6 +11,15 @@ public class Case {
     Information opportunity;
     HashMap<String, Person> suspects;
     HashMap<String, Place> places;
+
+    public HashMap<String, Person> getSuspects() {
+        return suspects;
+    }
+
+    public HashMap<String, Place> getPlaces() {
+        return places;
+    }
+
     HashMap<String, Information> clues;
 
     public Case() {

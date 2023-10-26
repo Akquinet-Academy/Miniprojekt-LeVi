@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import telegrambot.codeconundrum.Case;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Bot extends TelegramLongPollingBot {
         long chatId = getChatId(update);
         String messageReceived = getMessage(update);
         System.out.println(messageReceived);
+        Case gitHubChaos = new Case ();
 
         // start to evaluate the messages you received
         // 1. Main menu
@@ -53,8 +55,19 @@ public class Bot extends TelegramLongPollingBot {
                 case "suspect" -> sendMenu(suspectMenu, chatId);
                 case "place" -> sendMenu(placesMenu, chatId);
                 case "accusation" -> checkAccusation();
-                case "larry", "rita", "sam", "maggie", "hubert" -> sendMenu(questionsMenu, chatId);
+                case "larry" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Larry").toString());
+                case "rita" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Rita").toString());
+                case "sam" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Sam").toString());
+                case "maggie" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Maggie").toString());
+                case "hubert" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Hubert").toString());
                 case "desks" -> sendMenu(desksMenu, chatId);
+                case "cafeteria" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Cafeteria").toString());
+                case "serverRoom" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Server Room").toString());
+                case "larrysDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Larry's desk").toString());
+                case "ritasDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Rita's desk").toString());
+                case "samsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Sam's desk").toString());
+                case "maggiesDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Maggie's desk").toString());
+                case "hubertsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Hubert's desk").toString());
             }
         } else {
             sendMenu(mainMenu, chatId);

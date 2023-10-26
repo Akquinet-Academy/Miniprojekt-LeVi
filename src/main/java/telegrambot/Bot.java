@@ -99,13 +99,8 @@ public class Bot extends TelegramLongPollingBot {
         ongoing = false;
     }
 
-    private String sendErrorMessage(long chatId) {
-        sendResponse(chatId, "Please choose one of the options.");
-        return "Try again";
-    }
-
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
-        SendMessage sm = SendMessage.builder().text("What do you want to do?").chatId(chatId)
+        SendMessage sm = SendMessage.builder().text("What do you want to do? Choose from these options:").chatId(chatId)
                 .replyMarkup(keyboard).build();
 
         try {
@@ -157,50 +152,16 @@ public class Bot extends TelegramLongPollingBot {
         return InlineKeyboardButton.builder().text(text).callbackData(callbackData).build();
     }
 
-    /**
-     * This method counts the letters of a provided string parameter and saves them into a Map which is returned.
-     * All letters are converted into lowercase. Digits and other non-letter characters are not counted.
-     *
-     * @param input the string to be evaluated
-     * @return a map containing the result of
-     */
-    public Map<Character, Integer> countLetters(String input) {
-        Map<Character, Integer> letterCountMap = new HashMap<>();
-
-        for (char c : input.toCharArray()) {
-            // Convert the character to lowercase to count both uppercase and lowercase letters together
-            char lowercaseC = Character.toLowerCase(c);
-
-            // Check if the character is a letter (alphabet character)
-            if (Character.isLetter(lowercaseC)) {
-                letterCountMap.put(lowercaseC, letterCountMap.getOrDefault(lowercaseC, 0) + 1);
-            }
-        }
-        return letterCountMap;
-    }
-
-
     private void sendResponse(long chatId, String s) {
         SendMessage msg = new SendMessage();
         msg.setChatId(chatId);
         msg.setText(s);
-        msg.setParseMode("HTML");
+        msg.enableHtml(true);
+        //msg.setParseMode("HTML");
         //msg.wait(500);
 
         try {
             execute(msg);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendPollToUser(long chatId) {
-        SendPoll sendPoll = new SendPoll();
-        sendPoll.setChatId(chatId);
-        sendPoll.setQuestion("Which programming language do you like the most?");
-        sendPoll.setOptions(List.of("Java", "Python", "JavaScript", "C++"));
-        try {
-            execute(sendPoll);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

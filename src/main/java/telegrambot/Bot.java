@@ -20,7 +20,8 @@ public class Bot extends TelegramLongPollingBot {
     private InlineKeyboardMarkup questionsMenu;
     private InlineKeyboardMarkup placesMenu;
     private InlineKeyboardMarkup desksMenu;
-
+    private InlineKeyboardMarkup accuseSuspectsMenu;
+    Case gitHubChaos;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -28,7 +29,7 @@ public class Bot extends TelegramLongPollingBot {
         long chatId = getChatId(update);
         String messageReceived = getMessage(update);
         System.out.println(messageReceived);
-        Case gitHubChaos = new Case ();
+        gitHubChaos = new Case();
 
         // start to evaluate the messages you received
         // 1. Main menu
@@ -54,7 +55,7 @@ public class Bot extends TelegramLongPollingBot {
             switch (callbackData) {
                 case "suspect" -> sendMenu(suspectMenu, chatId);
                 case "place" -> sendMenu(placesMenu, chatId);
-                case "accusation" -> checkAccusation();
+                case "accusation" -> checkAccusation(chatId);
                 case "larry" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Larry").toString());
                 case "rita" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Rita").toString());
                 case "sam" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Sam").toString());
@@ -68,6 +69,8 @@ public class Bot extends TelegramLongPollingBot {
                 case "samsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Sam's desk").toString());
                 case "maggiesDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Maggie's desk").toString());
                 case "hubertsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Hubert's desk").toString());
+                case "accuseWrong" -> sendResponse(chatId, "Wrong! The culprit got away.");
+                case "accuseHubert" -> sendResponse(chatId, "Wrong! The culprit got away.");
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -76,7 +79,6 @@ public class Bot extends TelegramLongPollingBot {
         //ongoing = false;
 
     }
-
 
 
     private long getChatId(Update update) {
@@ -95,17 +97,24 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    void checkAccusation() {
-        ongoing = false;
-    }
+    void checkAccusation(long chatId) {
+        sendResponse(chatId, "<b>Present your solution: </b>");
+        sendResponse(chatId, "Who is the culprit?");
+        sendMenu(accuseSuspectsMenu, chatId);
 
-    private String sendErrorMessage(long chatId) {
-        sendResponse(chatId, "Please choose one of the options.");
-        return "Try again";
+
+
+
+    gitHubChaos.getSolution();
+        /*solution.put("Culprit", "Hubert");
+        solution.put("Motive", "Annoyance");
+        solution.put("Place", "Server Room");*/
+
+        //ongoing = false;
     }
 
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
-        SendMessage sm = SendMessage.builder().text("What do you want to do?").chatId(chatId)
+        SendMessage sm = SendMessage.builder().text("What do you want to do? Choose from these options:").chatId(chatId)
                 .replyMarkup(keyboard).build();
 
         try {
@@ -150,57 +159,29 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
         desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk)).keyboardRow(List.of(ritasDesk)).keyboardRow(List.of(hubertsDesk)).keyboardRow(List.of(samsDesk)).keyboardRow(List.of(maggiesDesk)).build();
 
-
+        //Menu AccusationSuspects
+        InlineKeyboardButton suslarry = createKeyboardButton("Larry", "accuseWrong");
+        InlineKeyboardButton susrita = InlineKeyboardButton.builder().text("Rita").callbackData("accuseWrong").build();
+        InlineKeyboardButton sussam = InlineKeyboardButton.builder().text("Sam").callbackData("accuseWrong").build();
+        InlineKeyboardButton susmaggie = InlineKeyboardButton.builder().text("Maggie").callbackData("accuseWrong").build();
+        InlineKeyboardButton sushubert = InlineKeyboardButton.builder().text("Hubert").callbackData("accusehubert").build();
+        accuseSuspectsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
     }
 
     private static InlineKeyboardButton createKeyboardButton(String text, String callbackData) {
         return InlineKeyboardButton.builder().text(text).callbackData(callbackData).build();
     }
 
-    /**
-     * This method counts the letters of a provided string parameter and saves them into a Map which is returned.
-     * All letters are converted into lowercase. Digits and other non-letter characters are not counted.
-     *
-     * @param input the string to be evaluated
-     * @return a map containing the result of
-     */
-    public Map<Character, Integer> countLetters(String input) {
-        Map<Character, Integer> letterCountMap = new HashMap<>();
-
-        for (char c : input.toCharArray()) {
-            // Convert the character to lowercase to count both uppercase and lowercase letters together
-            char lowercaseC = Character.toLowerCase(c);
-
-            // Check if the character is a letter (alphabet character)
-            if (Character.isLetter(lowercaseC)) {
-                letterCountMap.put(lowercaseC, letterCountMap.getOrDefault(lowercaseC, 0) + 1);
-            }
-        }
-        return letterCountMap;
-    }
-
-
     private void sendResponse(long chatId, String s) {
         SendMessage msg = new SendMessage();
         msg.setChatId(chatId);
         msg.setText(s);
-        msg.setParseMode("HTML");
+        msg.enableHtml(true);
+        //msg.setParseMode("HTML");
         //msg.wait(500);
 
         try {
             execute(msg);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendPollToUser(long chatId) {
-        SendPoll sendPoll = new SendPoll();
-        sendPoll.setChatId(chatId);
-        sendPoll.setQuestion("Which programming language do you like the most?");
-        sendPoll.setOptions(List.of("Java", "Python", "JavaScript", "C++"));
-        try {
-            execute(sendPoll);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -12,6 +12,8 @@ public class Case {
     HashMap<String, Person> suspects;
     HashMap<String, Place> places;
 
+    HashMap<String, String> solution;
+
     public HashMap<String, Person> getSuspects() {
         return suspects;
     }
@@ -39,7 +41,7 @@ public class Case {
 
 
     void createSolution() {
-        HashMap<String, String> solution = new HashMap<>();
+        solution = new HashMap<>();
         solution.put("Culprit", "Hubert");
         solution.put("Motive", "Annoyance");
         solution.put("Place", "Server Room");
@@ -54,7 +56,7 @@ public class Case {
         clues.put("SR desktop", new Information("Rows of towering server racks hum softly under the glow of blue status lights. At one end, an unassuming workstation blinks with lines of code on its screen, offering anonymous access to the repository.", true, places.get("Server Room")));
         clues.put("Phish fotos", new Information("A collage of photos from the company's most recent team-building day at the lake fills the walls. The irony of their 'phishy' outing is not lost on you.", false, places.get("Cafeteria")));
         clues.put("Coffee cup", new Information("A lone coffee cup rests on a table, its surface adorned with the phrase 'Caffeine Hacker' in playful font. Smells like freshly brewed mischief.", false, places.get("Cafeteria")));
-        clues.put("USB Stick", new Information("You spot a USB stick labeled 'Try me' left on an empty chair. As you eye this digital rabbit hole, you can't help but wonder if it's a potential social engineering attempt", false, places.get("Cafeteria")));
+        clues.put("USB Stick", new Information("You spot a USB stick labeled 'Try me' left on an empty chair. As you eye this digital rabbit hole, you can't help but wonder if it's a potential social engineering attempt.", false, places.get("Cafeteria")));
         clues.put("kinder egg", new Information("You notice a collection of Kinder Surprise eggs, a rather unusual find given their banned importation.", false, places.get("Larry's desk")));
         clues.put("chaos", new Information("Larry's desk is an absolute mess, cluttered with scattered papers, tangled wires, and the unmistakable evidence of past coffee spills.", false, places.get("Larry's desk")));
         clues.put("Larry's notes", new Information("You come across a collection of handwritten notes that seem to reflect his frustration and confusion. Among them, you notice scribbles that repeatedly question, \"How can I undo the mistake?\" ", false, places.get("Larry's desk")));
@@ -111,5 +113,7 @@ public class Case {
         this.places = places;
     }
 
-
+    public HashMap<String, String> getSolution() {
+        return solution;
+    }
 }

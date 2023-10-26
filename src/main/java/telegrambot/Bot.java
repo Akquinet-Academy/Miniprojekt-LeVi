@@ -20,7 +20,8 @@ public class Bot extends TelegramLongPollingBot {
     private InlineKeyboardMarkup questionsMenu;
     private InlineKeyboardMarkup placesMenu;
     private InlineKeyboardMarkup desksMenu;
-
+    private InlineKeyboardMarkup accuseSuspectsMenu;
+    Case gitHubChaos;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -28,7 +29,7 @@ public class Bot extends TelegramLongPollingBot {
         long chatId = getChatId(update);
         String messageReceived = getMessage(update);
         System.out.println(messageReceived);
-        Case gitHubChaos = new Case ();
+        gitHubChaos = new Case();
 
         // start to evaluate the messages you received
         // 1. Main menu
@@ -54,7 +55,7 @@ public class Bot extends TelegramLongPollingBot {
             switch (callbackData) {
                 case "suspect" -> sendMenu(suspectMenu, chatId);
                 case "place" -> sendMenu(placesMenu, chatId);
-                case "accusation" -> checkAccusation();
+                case "accusation" -> checkAccusation(chatId);
                 case "larry" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Larry").toString());
                 case "rita" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Rita").toString());
                 case "sam" -> sendResponse(chatId, gitHubChaos.getSuspects().get("Sam").toString());
@@ -68,6 +69,8 @@ public class Bot extends TelegramLongPollingBot {
                 case "samsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Sam's desk").toString());
                 case "maggiesDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Maggie's desk").toString());
                 case "hubertsDesk" -> sendResponse(chatId, gitHubChaos.getPlaces().get("Hubert's desk").toString());
+                case "accuseWrong" -> sendResponse(chatId, "Wrong! The culprit got away.");
+                case "accuseHubert" -> sendResponse(chatId, "Wrong! The culprit got away.");
             }
         } else {
             sendMenu(mainMenu, chatId);
@@ -76,7 +79,6 @@ public class Bot extends TelegramLongPollingBot {
         //ongoing = false;
 
     }
-
 
 
     private long getChatId(Update update) {
@@ -95,8 +97,20 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    void checkAccusation() {
-        ongoing = false;
+    void checkAccusation(long chatId) {
+        sendResponse(chatId, "<b>Present your solution: </b>");
+        sendResponse(chatId, "Who is the culprit?");
+        sendMenu(accuseSuspectsMenu, chatId);
+
+
+
+
+    gitHubChaos.getSolution();
+        /*solution.put("Culprit", "Hubert");
+        solution.put("Motive", "Annoyance");
+        solution.put("Place", "Server Room");*/
+
+        //ongoing = false;
     }
 
     private void sendMenu(InlineKeyboardMarkup keyboard, long chatId) {
@@ -145,7 +159,13 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardButton hubertsDesk = InlineKeyboardButton.builder().text("Investigate Hubert's desk").callbackData("hubertsDesk").build();
         desksMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larrysDesk)).keyboardRow(List.of(ritasDesk)).keyboardRow(List.of(hubertsDesk)).keyboardRow(List.of(samsDesk)).keyboardRow(List.of(maggiesDesk)).build();
 
-
+        //Menu AccusationSuspects
+        InlineKeyboardButton suslarry = createKeyboardButton("Larry", "accuseWrong");
+        InlineKeyboardButton susrita = InlineKeyboardButton.builder().text("Rita").callbackData("accuseWrong").build();
+        InlineKeyboardButton sussam = InlineKeyboardButton.builder().text("Sam").callbackData("accuseWrong").build();
+        InlineKeyboardButton susmaggie = InlineKeyboardButton.builder().text("Maggie").callbackData("accuseWrong").build();
+        InlineKeyboardButton sushubert = InlineKeyboardButton.builder().text("Hubert").callbackData("accusehubert").build();
+        accuseSuspectsMenu = InlineKeyboardMarkup.builder().keyboardRow(List.of(larry, rita, hubert, sam, maggie)).build();
     }
 
     private static InlineKeyboardButton createKeyboardButton(String text, String callbackData) {

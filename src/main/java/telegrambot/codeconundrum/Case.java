@@ -12,6 +12,8 @@ public class Case {
     HashMap<String, Person> suspects;
     HashMap<String, Place> places;
 
+    HashMap<String, String> solution;
+
     public HashMap<String, Person> getSuspects() {
         return suspects;
     }
@@ -39,7 +41,7 @@ public class Case {
 
 
     void createSolution() {
-        HashMap<String, String> solution = new HashMap<>();
+        solution = new HashMap<>();
         solution.put("Culprit", "Hubert");
         solution.put("Motive", "Annoyance");
         solution.put("Place", "Server Room");
@@ -111,5 +113,7 @@ public class Case {
         this.places = places;
     }
 
-
+    public HashMap<String, String> getSolution() {
+        return solution;
+    }
 }
